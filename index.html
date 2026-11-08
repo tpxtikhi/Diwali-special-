@@ -1,0 +1,372 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Deepavali Rangoli</title>
+<style>
+  body{margin:0;padding:0;background:#0d0f1d;display:flex;justify-content:center;align-items:center;min-height:100vh;overflow:hidden;font-family:Arial,sans-serif}
+  .container{text-align:center;position:relative}
+  h1{color:#ff9933;text-shadow:0 0 10px #ff9933,0 0 20px #ff5500;margin-bottom:20px;font-size:2.5rem;letter-spacing:2px}
+  .rangoli-wrapper{position:relative;width:450px;height:450px;margin:0 auto;filter:drop-shadow(0 0 20px rgba(255,102,0,.4))}
+  .rangoli-svg{width:100%;height:100%;animation:rotateRangoli 40s linear infinite}
+  @keyframes rotateRangoli{from{transform:rotate(0)}to{transform:rotate(360deg)}}
+  .diya{position:absolute;width:40px;height:40px;z-index:10}
+  .diya.center{top:calc(50% - 25px);left:calc(50% - 20px);transform:scale(1.3)}
+  .diya.top{top:5px;left:calc(50% - 20px)}
+  .diya.bottom{bottom:25px;left:calc(50% - 20px)}
+  .diya.left{top:calc(50% - 20px);left:5px}
+  .diya.right{top:calc(50% - 20px);right:5px}
+  .diya-base{width:40px;height:25px;background:linear-gradient(to bottom,#d2691e,#8b4513);border-radius:0 0 50px 50px;position:absolute;bottom:0;box-shadow:inset 0 3px 5px rgba(0,0,0,.3)}
+  .diya-flame{width:14px;height:22px;background:linear-gradient(to bottom,#ffcc00,#ff3300);border-radius:50% 50% 20% 20%/60% 60% 40% 40%;position:absolute;top:2px;left:13px;transform-origin:bottom center;animation:flicker .15s ease-in-out infinite alternate;box-shadow:0 0 10px #ffcc00,0 0 20px #ff3300,0 0 30px #ff3300}
+  @keyframes flicker{0%{transform:scale(1) rotate(-1deg)}100%{transform:scale(1.05) rotate(1deg);filter:blur(.5px)}}
+  .sparkle{position:absolute;background:#fff;border-radius:50%;animation:shot 3s infinite ease-in-out;opacity:0}
+  @keyframes shot{0%{transform:scale(0);opacity:0}50%{opacity:.8}100%{transform:scale(1.2);opacity:0}}
+
+  .special-btn{margin-top:22px;padding:14px 38px;font-size:1.2rem;font-weight:bold;letter-spacing:2px;color:#0d0f1d;background:linear-gradient(135deg,#ffcc00,#ff6600);border:none;border-radius:40px;cursor:pointer;box-shadow:0 0 15px #ff9933,0 0 30px #ff5500;transition:transform .2s}
+  .special-btn:hover{transform:scale(1.08)}
+
+  .overlay{position:fixed;inset:0;background:radial-gradient(circle at center,#1c1f3d,#0d0f1d);z-index:100;display:none;flex-direction:column;align-items:center;justify-content:flex-start;overflow-y:auto;padding:30px 15px;color:#fff;text-align:center}
+  .overlay.active{display:flex}
+  .overlay h2{color:#ff9933;text-shadow:0 0 10px #ff9933,0 0 20px #ff5500;font-size:2rem;margin:10px 0 20px}
+  .back-btn{position:absolute;top:15px;left:15px;padding:8px 18px;border:2px solid #ff9933;background:transparent;color:#ff9933;border-radius:20px;cursor:pointer;font-size:1rem}
+  .back-btn:hover{background:#ff9933;color:#0d0f1d}
+  .options{display:flex;gap:20px;flex-wrap:wrap;justify-content:center;margin-top:20px}
+  .opt{width:190px;padding:25px 10px;background:rgba(255,153,51,.1);border:2px solid #ff9933;border-radius:18px;cursor:pointer;color:#ffcc00;font-size:1.2rem;box-shadow:0 0 15px rgba(255,102,0,.4);transition:transform .2s}
+  .opt:hover{transform:translateY(-6px) scale(1.04)}
+  .opt .emoji{font-size:3rem;display:block;margin-bottom:8px}
+  .msg{color:#ffcc00;font-size:1.4rem;margin:15px 0;text-shadow:0 0 10px #ff5500}
+  textarea{padding:10px 14px;border-radius:12px;border:2px solid #ff9933;background:#161a33;color:#fff;font-size:1rem;width:100%;max-width:300px;box-sizing:border-box;height:90px;resize:none}
+  .go-btn{padding:10px 26px;border:none;border-radius:25px;background:linear-gradient(135deg,#ffcc00,#ff6600);color:#0d0f1d;font-weight:bold;cursor:pointer;font-size:1rem;margin:8px}
+
+  /* Patake */
+  #sky{width:100%;max-width:700px;height:340px;position:relative;background:#05060f;border:2px solid #ff9933;border-radius:16px;overflow:hidden;margin-top:15px}
+  .cracker{position:absolute;bottom:10px;font-size:3rem;cursor:pointer;transition:transform .15s;user-select:none}
+  .cracker:hover{transform:scale(1.2)}
+  .particle{position:absolute;width:6px;height:6px;border-radius:50%}
+  .rocket-fly{position:absolute;font-size:2rem;transition:bottom 1.4s ease-in}
+  .boom-text{position:absolute;left:50%;top:40%;transform:translate(-50%,-50%);font-size:2.2rem;color:#ffcc00;font-weight:bold;text-shadow:0 0 15px #ff3300;white-space:nowrap;animation:pop .8s ease-out forwards}
+  @keyframes pop{0%{transform:translate(-50%,-50%) scale(.2);opacity:0}40%{transform:translate(-50%,-50%) scale(1.3);opacity:1}100%{transform:translate(-50%,-50%) scale(1);opacity:0}}
+
+  /* Sweets */
+  .sweet-grid{display:flex;gap:25px;flex-wrap:wrap;justify-content:center;max-width:900px}
+  .sweet{width:240px;padding:20px;background:rgba(255,153,51,.1);border:2px solid #ff9933;border-radius:20px;text-align:center;cursor:pointer;user-select:none}
+  .sweet .emoji{display:inline-block;font-size:9rem;line-height:1.1}
+  .sweet p{margin:8px 0 0;font-size:1.2rem}
+
+  /* Lakshmi Puja */
+  .photo-heading{color:#ffcc00;font-size:1.5rem;margin:10px 0 4px;text-shadow:0 0 10px #ff5500}
+  .photo-comment{color:#c9c9d6;font-size:.95rem;margin:0 0 12px;max-width:480px}
+  .deity-frame{margin:0 0 10px;width:100%;max-width:480px;padding:14px;border:3px solid #ff9933;border-radius:20px;background:rgba(255,153,51,.1);box-shadow:0 0 25px rgba(255,102,0,.5);box-sizing:border-box}
+  .deity-frame img{width:100%;max-height:360px;object-fit:contain;border-radius:12px;display:block;background:#161a33;min-height:200px}
+  .deity-frame figcaption{color:#ffcc00;font-size:1.2rem;margin-top:10px}
+  .puja-split{display:flex;flex-direction:row;gap:25px;justify-content:center;align-items:flex-start;width:100%;max-width:820px;margin-top:20px}
+  .puja-left,.puja-right{flex:1;padding:18px;border:2px dashed #ff9933;border-radius:16px;min-width:0;box-sizing:border-box}
+  .dan-peti{font-size:4rem;cursor:pointer;transition:transform .2s}
+  .dan-peti:hover{transform:scale(1.15)}
+  .modal{position:fixed;inset:0;background:rgba(0,0,0,.8);z-index:300;display:none;align-items:center;justify-content:center;padding:15px}
+  .modal.active{display:flex}
+  .modal-box{background:#161a33;border:3px solid #ff9933;border-radius:20px;padding:25px;max-width:340px;width:100%;text-align:center;box-shadow:0 0 30px #ff5500;color:#fff}
+
+  /* QR figure */
+  .qr-frame{margin:10px auto;padding:12px;background:#fff;border-radius:12px;display:inline-block}
+  .qr-frame img{width:220px;height:220px;display:block;object-fit:contain}
+  .qr-frame figcaption{color:#0d0f1d;font-size:1rem;margin-top:8px}
+
+  @media(max-width:640px){.puja-split{flex-direction:column}}
+</style>
+</head>
+<body>
+
+<div class="container">
+  <h1>Happy Deepavali</h1>
+  <div class="rangoli-wrapper">
+    <div class="diya center"><div class="diya-flame"></div><div class="diya-base"></div></div>
+    <div class="diya top"><div class="diya-flame"></div><div class="diya-base"></div></div>
+    <div class="diya bottom"><div class="diya-flame"></div><div class="diya-base"></div></div>
+    <div class="diya left"><div class="diya-flame"></div><div class="diya-base"></div></div>
+    <div class="diya right"><div class="diya-flame"></div><div class="diya-base"></div></div>
+    <svg class="rangoli-svg" viewBox="0 0 200 200">
+      <defs>
+        <g id="petal"><path d="M 100,100 Q 90,60 100,30 Q 110,60 100,100" fill="#e91e63" opacity="0.9"/><path d="M 100,100 Q 93,65 100,45 Q 107,65 100,100" fill="#ffeb3b"/></g>
+        <g id="small-petal"><path d="M 100,100 Q 95,75 100,55 Q 105,75 100,100" fill="#00bcd4"/></g>
+        <g id="mango-motif"><path d="M 100,100 C 80,70 85,45 100,20 C 110,35 105,65 100,100" fill="#ff9800" stroke="#fff" stroke-width="0.5"/><circle cx="97" cy="45" r="2" fill="#fff"/></g>
+      </defs>
+      <circle cx="100" cy="100" r="90" fill="none" stroke="#ff5722" stroke-width="3" stroke-dasharray="4,3"/>
+      <circle cx="100" cy="100" r="82" fill="none" stroke="#4caf50" stroke-width="2"/>
+      <g transform="rotate(0 100 100)"><use href="#mango-motif"/></g><g transform="rotate(30 100 100)"><use href="#mango-motif"/></g><g transform="rotate(60 100 100)"><use href="#mango-motif"/></g><g transform="rotate(90 100 100)"><use href="#mango-motif"/></g><g transform="rotate(120 100 100)"><use href="#mango-motif"/></g><g transform="rotate(150 100 100)"><use href="#mango-motif"/></g><g transform="rotate(180 100 100)"><use href="#mango-motif"/></g><g transform="rotate(210 100 100)"><use href="#mango-motif"/></g><g transform="rotate(240 100 100)"><use href="#mango-motif"/></g><g transform="rotate(270 100 100)"><use href="#mango-motif"/></g><g transform="rotate(300 100 100)"><use href="#mango-motif"/></g><g transform="rotate(330 100 100)"><use href="#mango-motif"/></g>
+      <g transform="rotate(0 100 100)"><use href="#petal"/></g><g transform="rotate(45 100 100)"><use href="#petal"/></g><g transform="rotate(90 100 100)"><use href="#petal"/></g><g transform="rotate(135 100 100)"><use href="#petal"/></g><g transform="rotate(180 100 100)"><use href="#petal"/></g><g transform="rotate(225 100 100)"><use href="#petal"/></g><g transform="rotate(270 100 100)"><use href="#petal"/></g><g transform="rotate(315 100 100)"><use href="#petal"/></g>
+      <circle cx="100" cy="100" r="50" fill="#9c27b0" opacity="0.8"/>
+      <circle cx="100" cy="100" r="48" fill="none" stroke="#fff" stroke-width="1" stroke-dasharray="2,2"/>
+      <g transform="rotate(22.5 100 100)"><use href="#small-petal"/></g><g transform="rotate(67.5 100 100)"><use href="#small-petal"/></g><g transform="rotate(112.5 100 100)"><use href="#small-petal"/></g><g transform="rotate(157.5 100 100)"><use href="#small-petal"/></g><g transform="rotate(202.5 100 100)"><use href="#small-petal"/></g><g transform="rotate(247.5 100 100)"><use href="#small-petal"/></g><g transform="rotate(292.5 100 100)"><use href="#small-petal"/></g><g transform="rotate(337.5 100 100)"><use href="#small-petal"/></g>
+      <circle cx="100" cy="100" r="28" fill="#ffeb3b"/>
+      <circle cx="100" cy="100" r="22" fill="#ff5722"/>
+    </svg>
+  </div>
+  <button class="special-btn" onclick="openPage('mainPage')">Diwali Special</button>
+</div>
+
+<div class="sparkle" style="top:20%;left:15%;width:4px;height:4px;animation-delay:.5s"></div>
+<div class="sparkle" style="top:25%;right:18%;width:6px;height:6px;animation-delay:1.2s"></div>
+<div class="sparkle" style="bottom:20%;left:20%;width:5px;height:5px;animation-delay:.2s"></div>
+<div class="sparkle" style="bottom:28%;right:15%;width:4px;height:4px;animation-delay:1.8s"></div>
+
+<!-- PAGE 1 -->
+<div class="overlay" id="mainPage">
+  <button class="back-btn" onclick="closeAll()">Close</button>
+  <h2>Diwali Special</h2>
+  <div class="options">
+    <div class="opt" onclick="openPage('patakePage')"><span class="emoji">🎆</span>Patake</div>
+    <div class="opt" onclick="openPage('sweetsPage')"><span class="emoji">🍬</span>Sweets</div>
+    <div class="opt" onclick="openPage('pujaPage')"><span class="emoji">🪔</span>Lakshmi Puja</div>
+  </div>
+</div>
+
+<!-- PATAKE -->
+<div class="overlay" id="patakePage">
+  <button class="back-btn" onclick="openPage('mainPage')">Back</button>
+  <h2>Patake</h2>
+  <p class="msg">Tap a packet to light it up!</p>
+  <div id="sky">
+    <div class="cracker" style="left:15%" onclick="fireBomb(this)" title="Bomb">💣</div>
+    <div class="cracker" style="left:45%" onclick="fireAnar(this)" title="Anar">🎇</div>
+    <div class="cracker" style="left:75%" onclick="fireRocket(this)" title="Rocket">🚀</div>
+  </div>
+  <p>Left: Bomb &nbsp;|&nbsp; Middle: Anar &nbsp;|&nbsp; Right: Rocket</p>
+</div>
+
+<!-- SWEETS -->
+<div class="overlay" id="sweetsPage">
+  <button class="back-btn" onclick="openPage('mainPage')">Back</button>
+  <h2>Sweets</h2>
+  <p class="msg">Tap a sweet to eat it! Tap the right side to eat from the right, the left side to eat from the left.</p>
+  <div class="sweet-grid" id="sweetGrid"></div>
+  <p id="eatenCount" class="msg" style="font-size:1.1rem"></p>
+  <button class="go-btn" onclick="renderSweets()">More sweets 🍬</button>
+</div>
+
+<!-- LAKSHMI PUJA -->
+<div class="overlay" id="pujaPage">
+  <button class="back-btn" onclick="openPage('mainPage')">Back</button>
+  <h2>Lakshmi Puja</h2>
+
+  <h3 class="photo-heading">Lakshmi Mata and Ganesh Ji</h3>
+  <p class="photo-comment">Photo section: this frame holds the photo of Lakshmi Mata and Ganesh Ji together.</p>
+
+  <figure class="deity-frame">
+    <img src="images.jpg" alt="Lakshmi Mata and Ganesh Ji">
+    <figcaption>Shubh Deepavali. May Lakshmi Mata and Ganesh Ji bless you.</figcaption>
+  </figure>
+
+  <div class="puja-split">
+    <div class="puja-left">
+      <div class="dan-peti" onclick="openDonate()" title="Dan Peti">🏺</div>
+      <p class="msg" style="font-size:1.1rem">Dan Peti: tap to donate</p>
+    </div>
+    <div class="puja-right">
+      <h3 style="color:#ffcc00;margin-top:0">Make a Wish</h3>
+      <textarea id="wishText" placeholder="Type your wish here..."></textarea><br>
+      <button class="go-btn" onclick="sendWish()">Send Wish</button>
+      <p id="wishReply" class="msg" style="font-size:1.1rem"></p>
+    </div>
+  </div>
+</div>
+
+<!-- DONATE POP-UP WITH QR -->
+<div class="modal" id="donateModal">
+  <div class="modal-box">
+    <h3 style="color:#ff9933;margin-top:0">Scan and donate</h3>
+
+    <!-- ============ QR CODE SECTION ============ -->
+    <figure class="qr-frame">
+      <!-- PUT YOUR QR IMAGE FILE NAME IN src BELOW (example: qr.png, qr.jpg, qr.jpeg) -->
+      <img src="qr3.png" alt="Scan to donate">
+      <figcaption>Scan this QR to donate</figcaption>
+    </figure>
+    <!-- ============ END QR CODE SECTION ============ -->
+
+    <br>
+    <button class="go-btn" id="paidBtn" onclick="paidDone()">I have paid</button>
+    <button class="back-btn" style="position:static;margin:6px" onclick="closeDonate()">Close</button>
+    <p id="thanksMsg" class="msg" style="display:none;font-size:1.2rem">Thank you for the donation. You made my Diwali special! 🪔</p>
+  </div>
+</div>
+
+<script>
+/* ---------- Navigation ---------- */
+function closeAll(){document.querySelectorAll('.overlay').forEach(o=>o.classList.remove('active'))}
+function openPage(id){
+  closeAll();
+  document.getElementById(id).classList.add('active');
+  if(id==='sweetsPage') renderSweets();
+}
+
+/* ---------- Sounds ---------- */
+let audioCtx;
+function ctx(){if(!audioCtx)audioCtx=new (window.AudioContext||window.webkitAudioContext)();return audioCtx}
+function boomSound(){
+  const c=ctx(),len=c.sampleRate*0.8,buf=c.createBuffer(1,len,c.sampleRate),d=buf.getChannelData(0);
+  for(let i=0;i<len;i++){d[i]=(Math.random()*2-1)*Math.pow(1-i/len,3)}
+  const src=c.createBufferSource();src.buffer=buf;
+  const lp=c.createBiquadFilter();lp.type='lowpass';lp.frequency.value=400;
+  const g=c.createGain();g.gain.value=1.5;
+  src.connect(lp);lp.connect(g);g.connect(c.destination);src.start();
+}
+function whistleSound(){
+  const c=ctx(),o=c.createOscillator(),g=c.createGain();
+  o.type='sawtooth';o.frequency.setValueAtTime(300,c.currentTime);
+  o.frequency.exponentialRampToValueAtTime(1800,c.currentTime+1.4);
+  g.gain.setValueAtTime(0.08,c.currentTime);g.gain.linearRampToValueAtTime(0,c.currentTime+1.4);
+  o.connect(g);g.connect(c.destination);o.start();o.stop(c.currentTime+1.4);
+}
+function crunchSound(){
+  const c=ctx(),len=c.sampleRate*0.08,buf=c.createBuffer(1,len,c.sampleRate),d=buf.getChannelData(0);
+  for(let i=0;i<len;i++){d[i]=(Math.random()*2-1)*Math.pow(1-i/len,2)}
+  const src=c.createBufferSource();src.buffer=buf;
+  const hp=c.createBiquadFilter();hp.type='highpass';hp.frequency.value=1200;
+  const g=c.createGain();g.gain.value=0.6;
+  src.connect(hp);hp.connect(g);g.connect(c.destination);src.start();
+}
+
+/* ---------- Particles ---------- */
+const COLORS=['#ffcc00','#ff3300','#ff66cc','#00e5ff','#76ff03','#ffffff'];
+function burst(sky,x,y,count,spread){
+  for(let i=0;i<count;i++){
+    const p=document.createElement('div');p.className='particle';
+    p.style.left=x+'px';p.style.top=y+'px';
+    p.style.background=COLORS[Math.floor(Math.random()*COLORS.length)];
+    p.style.boxShadow='0 0 8px '+p.style.background;
+    sky.appendChild(p);
+    const a=Math.random()*Math.PI*2,r=spread*(0.5+Math.random()*0.5);
+    p.animate([{transform:'translate(0,0) scale(1)',opacity:1},
+               {transform:'translate('+Math.cos(a)*r+'px,'+(Math.sin(a)*r+30)+'px) scale(0.2)',opacity:0}],
+               {duration:1200+Math.random()*600,easing:'ease-out'});
+    setTimeout(()=>p.remove(),1900);
+  }
+}
+function showText(sky,text){
+  const t=document.createElement('div');t.className='boom-text';t.textContent=text;
+  sky.appendChild(t);setTimeout(()=>t.remove(),900);
+}
+
+/* ---------- Rocket ---------- */
+function fireRocket(el){
+  const sky=document.getElementById('sky');
+  const r=document.createElement('div');r.className='rocket-fly';r.textContent='🚀';
+  r.style.left=el.offsetLeft+'px';r.style.bottom='60px';sky.appendChild(r);
+  whistleSound();
+  setTimeout(()=>{r.style.bottom='260px'},30);
+  setTimeout(()=>{r.remove();boomSound();burst(sky,el.offsetLeft+20,70,60,140)},1450);
+}
+
+/* ---------- Anar ---------- */
+function fireAnar(el){
+  const sky=document.getElementById('sky');
+  const x=el.offsetLeft+24,y=sky.clientHeight-60;
+  let n=0;
+  const timer=setInterval(()=>{
+    for(let i=0;i<8;i++){
+      const p=document.createElement('div');p.className='particle';
+      p.style.left=x+'px';p.style.top=y+'px';
+      p.style.background=COLORS[Math.floor(Math.random()*COLORS.length)];
+      p.style.boxShadow='0 0 8px '+p.style.background;
+      sky.appendChild(p);
+      const dx=(Math.random()-0.5)*160,dy=-(120+Math.random()*130);
+      p.animate([{transform:'translate(0,0)',opacity:1},
+                 {transform:'translate('+dx*0.6+'px,'+dy+'px)',opacity:1,offset:0.5},
+                 {transform:'translate('+dx+'px,'+(dy+120)+'px)',opacity:0}],
+                 {duration:1300,easing:'ease-out'});
+      setTimeout(()=>p.remove(),1350);
+    }
+    if(++n>25)clearInterval(timer);
+  },100);
+}
+
+/* ---------- Bomb ---------- */
+function fireBomb(el){
+  const sky=document.getElementById('sky');
+  el.style.opacity='0.3';
+  setTimeout(()=>{
+    boomSound();
+    sky.style.background='#3a1a05';setTimeout(()=>sky.style.background='#05060f',150);
+    burst(sky,el.offsetLeft+24,sky.clientHeight-60,50,120);
+    showText(sky,'BOOM! Happy Diwali!');
+    el.style.opacity='1';
+  },800);
+}
+
+/* ---------- Sweets ---------- */
+const SWEETS=[{e:'🍬',n:'Laddoo'},{e:'🍮',n:'Gulab Jamun'},{e:'🍥',n:'Jalebi'},{e:'🥮',n:'Barfi'},{e:'🍩',n:'Soan Papdi'},{e:'🍯',n:'Rasgulla'}];
+let eatenTotal=0;
+function renderSweets(){
+  const grid=document.getElementById('sweetGrid');
+  grid.innerHTML='';
+  SWEETS.forEach(s=>{
+    const card=document.createElement('div');card.className='sweet';
+    card.innerHTML='<span class="emoji">'+s.e+'</span><p>'+s.n+'</p>';
+    card.addEventListener('click',ev=>eatSweet(card,ev));
+    grid.appendChild(card);
+  });
+  document.getElementById('eatenCount').textContent=eatenTotal?('Sweets eaten so far: '+eatenTotal+' 😋'):'';
+}
+function eatSweet(card,ev){
+  if(card.dataset.eaten) return;
+  card.dataset.eaten='1';
+  const em=card.querySelector('.emoji');
+  const rect=em.getBoundingClientRect();
+  const fromRight=ev.clientX>rect.left+rect.width/2;
+  const gone=fromRight?'inset(0 100% 0 0)':'inset(0 0 0 100%)';
+  for(let i=0;i<6;i++) setTimeout(crunchSound,i*250);
+  const anim=em.animate([{clipPath:'inset(0 0 0 0)'},{clipPath:gone}],{duration:1500,easing:'steps(6,end)',fill:'forwards'});
+  anim.onfinish=()=>{
+    card.querySelector('p').textContent='Yummy! 😋';
+    eatenTotal++;
+    document.getElementById('eatenCount').textContent='Sweets eaten so far: '+eatenTotal+' 😋';
+    card.style.transition='opacity .6s';
+    setTimeout(()=>{card.style.opacity='0'},400);
+    setTimeout(()=>card.remove(),1000);
+  };
+}
+
+/* ---------- Wish: emailed to akhilsahh07@gmail.com via Formspree ---------- */
+/* Replace YOUR_FORMSPREE_ID with your ID from formspree.io (example: abcdwxyz) */
+const FORMSPREE_URL='https://formspree.io/f/xljjkydk';
+async function sendWish(){
+  const w=document.getElementById('wishText');
+  const reply=document.getElementById('wishReply');
+  const text=w.value.trim();
+  if(!text){reply.textContent='Please type your wish first.';return}
+  reply.textContent='Sending your wish...';
+  try{
+    const res=await fetch(FORMSPREE_URL,{
+      method:'POST',
+      headers:{'Content-Type':'application/json','Accept':'application/json'},
+      body:JSON.stringify({wish:text,_subject:'New Diwali Wish'})
+    });
+    if(res.ok){
+      reply.textContent='Your wish has been offered to Lakshmi Mata. Shubh Deepavali! 🪔';
+      w.value='';
+    }else{
+      reply.textContent='Sorry, the wish could not be sent. Please try again.';
+    }
+  }catch(e){
+    reply.textContent='No internet. Please try again.';
+  }
+}
+
+/* ---------- Dan Peti: open and close the QR pop-up ---------- */
+function openDonate(){
+  document.getElementById('donateModal').classList.add('active');
+  document.getElementById('thanksMsg').style.display='none';
+  document.getElementById('paidBtn').style.display='inline-block';
+}
+function closeDonate(){
+  document.getElementById('donateModal').classList.remove('active');
+}
+function paidDone(){
+  document.getElementById('paidBtn').style.display='none';
+  document.getElementById('thanksMsg').style.display='block';
+}
+</script>
+</body>
+</html>
